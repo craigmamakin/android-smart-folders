@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
@@ -71,7 +70,6 @@ class SmartFolderWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // ROW 1: Categorical Folder Circle
-                // Nesting layers inside a Box to ensure they stack correctly on all launchers
                 Box(
                     modifier = GlanceModifier
                         .size(64.dp)
@@ -119,41 +117,18 @@ class SmartFolderWidget : GlanceAppWidget() {
                     }
                 }
 
-                // ROW 2: High-Contrast Accessibility Label
-                Box(
-                    modifier = GlanceModifier.padding(top = 6.dp, start = 4.dp, end = 4.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Shadow Layer
-                    Text(
-                        text = category.getShortLabel(LocalContext.current),
-                        maxLines = 1,
-                        style = TextStyle(
-                            color = object : ColorProvider {
-                                override fun getColor(context: Context): Color = Color.Black.copy(alpha = 0.6f)
-                            },
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.SansSerif,
-                            textAlign = TextAlign.Center
-                        ),
-                        modifier = GlanceModifier.padding(top = 1.dp, start = 1.dp)
-                    )
-                    // Primary Label Layer
-                    Text(
-                        text = category.getShortLabel(LocalContext.current),
-                        maxLines = 1,
-                        style = TextStyle(
-                            color = object : ColorProvider {
-                                override fun getColor(context: Context): Color = Color.White
-                            },
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.SansSerif,
-                            textAlign = TextAlign.Center
-                        )
-                    )
-                }
+                // ROW 2: Clean Label (No background, larger Inter font, truncated with ellipsis)
+                val labelBitmap = WidgetUtils.createTextBitmap(
+                    context = LocalContext.current,
+                    text = category.getShortLabel(LocalContext.current),
+                    fontSizeSp = 14f,
+                    maxWidthDp = 72
+                )
+                Image(
+                    provider = ImageProvider(labelBitmap),
+                    contentDescription = category.getDisplayName(LocalContext.current),
+                    modifier = GlanceModifier.padding(top = 8.dp)
+                )
             }
         }
     }

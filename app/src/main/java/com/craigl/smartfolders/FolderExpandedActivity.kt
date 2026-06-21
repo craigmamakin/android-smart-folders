@@ -18,14 +18,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -95,7 +92,7 @@ fun FolderExpandedScreen(category: FolderCategory, onDismiss: () -> Unit) {
                 .fillMaxHeight(0.75f)
                 .clickable(enabled = false) {},
             shape = RoundedCornerShape(32.dp),
-            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f), // More translucent glass effect
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
             tonalElevation = 6.dp,
             border = androidx.compose.foundation.BorderStroke(
                 width = 0.5.dp,
@@ -111,7 +108,7 @@ fun FolderExpandedScreen(category: FolderCategory, onDismiss: () -> Unit) {
                 Box(modifier = Modifier.fillMaxWidth().padding(bottom = 32.dp)) {
                     Text(
                         text = category.getDisplayName(context),
-                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -183,15 +180,24 @@ fun AppItem(app: AppInfo) {
             }
         }
         
-        Text(
-            text = app.label,
-            style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 8.dp)
-        )
+        Box(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .background(
+                    color = Color.White.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(horizontal = 8.dp, vertical = 2.dp)
+        ) {
+            Text(
+                text = app.label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
