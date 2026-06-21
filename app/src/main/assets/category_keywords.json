@@ -102,7 +102,7 @@
       "com.einnovation.temu", "com.amazon.mShop.android.shopping", "com.alibaba.aliexpresshd", "com.zzkko", "de.zalando.mobile", "com.miravia.android", "com.inditex.zara", "com.hm.go.android", "com.wallapop", "fr.vinted", "com.muba.anuncios", "com.ebay.mobile", "com.lidl.eci.lidlplus", "es.mercadona.tienda", "com.munrodev.crfmobile", "es.elcorteingles.android", "com.decathlon.app", "com.ingka.ikea.app", "es.mediamarkt.app", "com.leroymerlin.app", "com.chollometro.android", "com.glovo", "de.idealo.android", "com.vinted", "com.tesco.grocery.view", "com.sainsburys.groceries", "com.asda.android",
       "com.walmart.android", "com.target.ui", "com.shopify.android.shop", "it.eurospin.app", "com.action.app", "com.hacoo.app", "com.saramart.android", "it.subito.app", "com.homretailgroup.argos.android", "com.asda.asdarewards", "com.aimia.nectar", "uk.co.inpost.app"
     ],
-    "excludedPackages": ["com.google.android.apps.recorder"]
+    "excludedPackages": ["com.google.android.apps.recorder", "com.android.vending"]
   },
   "NEWS": {
     "displayName": "News",
@@ -124,7 +124,7 @@
     ],
     "packageIds": [
       "es.gob.clave.app", "es.gob.aapp.mcp", "es.seg_social.importass", "es.aeat.etributaria", "com.google.android.apps.authenticator", "com.microsoft.launcher", "com.lastpass.lpandroid", "com.cleanmaster.msecurity", "com.sec.android.app.myfiles", "com.android.calculator2", "com.google.android.calculator", "com.google.android.deskclock", "com.infonow.bcw",
-      "it.poligrafo.cieid", "it.pagopa.io.app", "it.poste.posteid", "it.iliad.mioconto", "com.azure.authenticator", "com.readdle.scanner", "uk.gov.one.login", "uk.gov.hmrc.tax", "uk.gov.dwp.universalcredit"
+      "it.poligrafo.cieid", "it.pagopa.io.app", "it.poste.posteid", "it.iliad.mioconto", "com.azure.authenticator", "com.readdle.scanner", "uk.gov.one.login", "uk.gov.hmrc.tax", "uk.gov.dwp.universalcredit", "com.android.vending"
     ]
   },
   "SPORTS": {
