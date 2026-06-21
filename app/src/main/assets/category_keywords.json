@@ -69,13 +69,14 @@
     "displayName": "Google",
     "shortLabel": "Google",
     "subtitle": "Includes Chrome, Gmail, Photos and more...",
-    "keywords": ["google", "pixel", "assistant", "gmail", "chrome", "youtube", "drive", "photos", "maps", "keep", "calendar", "docs", "sheets", "slides", "files", "gpay", "play", "vending", "android", "wallet", "lens", "translate", "home", "chromecast", "earth", "gemini", "bard", "assistant", "pixel", "authenticator", "wellbeing", "recorder", "findmy", "familylink", "one", "subscriptions", "voice", "contacts", "messages", "news", "magazines", "podcasts", "tasks", "translate"],
+    "keywords": ["google", "pixel", "assistant", "gmail", "chrome", "youtube", "drive", "photos", "maps", "keep", "calendar", "docs", "sheets", "slides", "files", "gpay", "vending", "wallet", "lens", "translate", "chromecast", "earth", "gemini", "bard", "pixel", "authenticator", "wellbeing", "recorder", "findmy", "familylink", "one", "subscriptions", "voice", "contacts", "messages", "news", "magazines", "podcasts", "tasks"],
     "packagePrefixes": [
       "com.google.android.", "com.android.vending", "com.android.chrome", "com.google.android.apps.", "com.google.android.gm", "com.google.android.youtube", "com.google.android.googlequicksearchbox", "com.google.android.material", "com.google.firebase."
     ],
     "packageIds": [
       "com.google.android.gm", "com.android.chrome", "com.google.android.apps.photos", "com.google.android.apps.maps", "com.google.android.apps.docs", "com.google.android.apps.sheets", "com.google.android.apps.slides", "com.google.android.youtube", "com.google.android.apps.youtube.music", "com.google.android.apps.messaging", "com.google.android.calendar", "com.google.android.contacts", "com.google.android.keep", "com.google.android.apps.walletnfcrel", "com.android.vending", "com.google.android.googlequicksearchbox", "com.google.android.apps.chromecast.app", "com.google.android.apps.magazines", "com.google.android.apps.messaging", "com.google.android.apps.translate", "com.google.android.apps.authenticator2", "com.google.android.apps.tasks", "com.google.android.apps.youtube.creator", "com.google.android.apps.youtube.music", "com.google.android.apps.youtube.kids", "com.google.android.apps.nbu.files", "com.google.android.apps.nbu.paisa.user", "com.google.android.apps.wellbeing", "com.google.android.apps.walletnfcrel", "com.google.android.apps.lens", "com.google.android.apps.googlevoice", "com.google.android.apps.adm", "com.google.android.apps.pixel.faceunlock", "com.google.android.apps.pixel.health", "com.google.android.apps.pixel.safety", "com.google.android.apps.pixel.tips", "com.google.android.apps.pixel.setup", "com.google.android.apps.pixel.guide", "com.google.android.apps.pixel.support", "com.google.android.apps.subscriptions.red"
-    ]
+    ],
+    "excludedPackages": ["com.garmin.android", "com.nordvpn", "com.nordpass", "io.homeassistant", "com.melcloud", "de.number26"]
   },
   "ENTERTAINMENT": {
     "displayName": "Entertainment",
