@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Shadow Layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp" />
+            <solid android:color="#26000000" />
+        </shape>
+    </item>
+
+    <!-- Symmetrical Glass Body -->
+    <item
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp" />
+            <gradient
+                android:angle="270"
+                android:endColor="#1AFFFFFF"
+                android:startColor="#4DFFFFFF"
+                android:type="linear" />
+            <!-- Polished edge rim -->
+            <stroke
+                android:width="0.5dp"
+                android:color="#80FFFFFF" />
+        </shape>
+    </item>
+</layer-list>
