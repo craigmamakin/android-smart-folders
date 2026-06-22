@@ -113,15 +113,38 @@ object AppManager {
 
         val config = getCategoryInfo(context, category)
 
-        val apps = resolveInfos.map { resolveInfo ->
+        val apps = resolveInfos.mapNotNull { resolveInfo ->
             val appInfo = resolveInfo.activityInfo.applicationInfo
-            AppInfo(
-                packageName = appInfo.packageName,
-                label = resolveInfo.loadLabel(pm).toString(),
-                category = appInfo.category
-            )
-        }.filter { app ->
-            isSmartMatch(app, category, config)
+            val packageName = appInfo.packageName
+            
+            // Optimization: check package-based rules before loading label (which is slow)
+            val isMatchByPackage = config?.let {
+                it.packageIds.contains(packageName.lowercase()) ||
+                it.packagePrefixes.any { prefix -> packageName.lowercase().startsWith(prefix) } ||
+                (category == FolderCategory.SOCIAL && appInfo.category == ApplicationInfo.CATEGORY_SOCIAL) ||
+                (category == FolderCategory.PRODUCTIVITY && appInfo.category == ApplicationInfo.CATEGORY_PRODUCTIVITY) ||
+                (category == FolderCategory.TRAVEL && appInfo.category == ApplicationInfo.CATEGORY_MAPS) ||
+                (category == FolderCategory.ENTERTAINMENT && (appInfo.category == ApplicationInfo.CATEGORY_VIDEO || appInfo.category == ApplicationInfo.CATEGORY_AUDIO)) ||
+                (category == FolderCategory.NEWS && appInfo.category == ApplicationInfo.CATEGORY_NEWS) ||
+                (category == FolderCategory.GAMES && appInfo.category == ApplicationInfo.CATEGORY_GAME)
+            } ?: false
+
+            if (isMatchByPackage) {
+                AppInfo(
+                    packageName = packageName,
+                    label = resolveInfo.loadLabel(pm).toString(),
+                    category = appInfo.category
+                )
+            } else {
+                // Only load label if package didn't match, to check keywords
+                val label = resolveInfo.loadLabel(pm).toString()
+                val app = AppInfo(
+                    packageName = packageName,
+                    label = label,
+                    category = appInfo.category
+                )
+                if (isSmartMatch(app, category, config)) app else null
+            }
         }.distinctBy { it.packageName }
 
         Log.d("SmartFolders", "Found ${apps.size} apps for category ${category.name}")

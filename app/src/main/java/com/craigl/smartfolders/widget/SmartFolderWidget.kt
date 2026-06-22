@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
@@ -49,87 +50,119 @@ class SmartFolderWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             val prefs = currentState<Preferences>()
-            val categoryName = prefs[CategoryKey] ?: FolderCategory.MONEY.name
-            val category = try {
-                FolderCategory.valueOf(categoryName)
-            } catch (e: Exception) {
-                when (categoryName) {
-                    "BANKING", "FINANCE" -> FolderCategory.MONEY
-                    "MAPS" -> FolderCategory.TRAVEL
-                    else -> FolderCategory.MONEY
-                }
-            }
-
-            // Fetch up to 7 apps for a circular 2-3-2 staggered preview
-            val apps = AppManager.getAppsForCategory(LocalContext.current, category).take(7)
-            val accentColor = getAccentColor(category)
-
-            Column(
-                modifier = GlanceModifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // ROW 1: Categorical Folder Circle
-                Box(
-                    modifier = GlanceModifier
-                        .size(64.dp)
-                        .clickable(actionStartActivity(
-                            Intent(LocalContext.current, FolderExpandedActivity::class.java).apply {
-                                putExtra("category", category.name)
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            }
-                        )),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // LAYER 1: The Translucent Category Color Base
-                    Box(
-                        modifier = GlanceModifier
-                            .fillMaxSize()
-                            .cornerRadius(32.dp)
-                            .background(accentColor.copy(alpha = 0.60f))
-                    ) {}
-
-                    // LAYER 2: The Glossy Glass Polish
-                    Image(
-                        provider = ImageProvider(R.drawable.folder_bg),
-                        contentDescription = null,
-                        modifier = GlanceModifier.fillMaxSize()
-                    )
-
-                    // LAYER 3: The App Icons
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppIcon(LocalContext.current, apps.getOrNull(0))
-                            AppIcon(LocalContext.current, apps.getOrNull(1))
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppIcon(LocalContext.current, apps.getOrNull(2))
-                            AppIcon(LocalContext.current, apps.getOrNull(3))
-                            AppIcon(LocalContext.current, apps.getOrNull(4))
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppIcon(LocalContext.current, apps.getOrNull(5))
-                            AppIcon(LocalContext.current, apps.getOrNull(6))
-                        }
+            val categoryName = prefs[CategoryKey]
+            
+            if (categoryName == null) {
+                LoadingContent()
+            } else {
+                val category = try {
+                    FolderCategory.valueOf(categoryName)
+                } catch (e: Exception) {
+                    when (categoryName) {
+                        "BANKING", "FINANCE" -> FolderCategory.MONEY
+                        "MAPS" -> FolderCategory.TRAVEL
+                        else -> FolderCategory.MONEY
                     }
                 }
 
-                // ROW 2: Clean Label (No background, larger Inter font, truncated with ellipsis)
-                val labelBitmap = WidgetUtils.createTextBitmap(
-                    context = LocalContext.current,
-                    text = category.getShortLabel(LocalContext.current),
-                    fontSizeSp = 14f,
-                    maxWidthDp = 72
-                )
-                Image(
-                    provider = ImageProvider(labelBitmap),
-                    contentDescription = category.getDisplayName(LocalContext.current),
-                    modifier = GlanceModifier.padding(top = 8.dp)
-                )
+                // Fetch up to 7 apps for a circular 2-3-2 staggered preview
+                val apps = AppManager.getAppsForCategory(LocalContext.current, category).take(7)
+                val accentColor = getAccentColor(category)
+
+                Column(
+                    modifier = GlanceModifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // ROW 1: Categorical Folder Circle
+                    Box(
+                        modifier = GlanceModifier
+                            .size(64.dp)
+                            .clickable(actionStartActivity(
+                                Intent(LocalContext.current, FolderExpandedActivity::class.java).apply {
+                                    putExtra("category", category.name)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                            )),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        // LAYER 1: The Translucent Category Color Base
+                        Box(
+                            modifier = GlanceModifier
+                                .fillMaxSize()
+                                .cornerRadius(32.dp)
+                                .background(accentColor.copy(alpha = 0.60f))
+                        ) {}
+
+                        // LAYER 2: The Glossy Glass Polish
+                        Image(
+                            provider = ImageProvider(R.drawable.folder_bg),
+                            contentDescription = null,
+                            modifier = GlanceModifier.fillMaxSize()
+                        )
+
+                        // LAYER 3: The App Icons
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AppIcon(LocalContext.current, apps.getOrNull(0))
+                                AppIcon(LocalContext.current, apps.getOrNull(1))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AppIcon(LocalContext.current, apps.getOrNull(2))
+                                AppIcon(LocalContext.current, apps.getOrNull(3))
+                                AppIcon(LocalContext.current, apps.getOrNull(4))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AppIcon(LocalContext.current, apps.getOrNull(5))
+                                AppIcon(LocalContext.current, apps.getOrNull(6))
+                            }
+                        }
+                    }
+
+                    // ROW 2: Clean Label (No background, larger Inter font, truncated with ellipsis)
+                    val labelBitmap = WidgetUtils.createTextBitmap(
+                        context = LocalContext.current,
+                        text = category.getShortLabel(LocalContext.current),
+                        fontSizeSp = 14f,
+                        maxWidthDp = 72
+                    )
+                    Image(
+                        provider = ImageProvider(labelBitmap),
+                        contentDescription = category.getDisplayName(LocalContext.current),
+                        modifier = GlanceModifier.padding(top = 8.dp)
+                    )
+                }
             }
+        }
+    }
+
+    @Composable
+    private fun LoadingContent() {
+        Column(
+            modifier = GlanceModifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = GlanceModifier
+                    .size(64.dp)
+                    .cornerRadius(32.dp)
+                    .background(Color.White.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                // Empty placeholder circle
+            }
+            Text(
+                text = "Loading...",
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = GlanceModifier.padding(top = 8.dp)
+            )
         }
     }
 
@@ -190,13 +223,22 @@ class SmartFolderWidget : GlanceAppWidget() {
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap {
+        val width = drawable.intrinsicWidth.coerceAtLeast(1)
+        val height = drawable.intrinsicHeight.coerceAtLeast(1)
+        
+        // Target size for 18dp icons: roughly 72px at 4x density
+        val targetSize = 72
+        val scale = (targetSize.toFloat() / maxOf(width, height)).coerceAtMost(1f)
+        val finalWidth = (width * scale).toInt().coerceAtLeast(1)
+        val finalHeight = (height * scale).toInt().coerceAtLeast(1)
+
         val bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth.coerceAtLeast(1),
-            drawable.intrinsicHeight.coerceAtLeast(1),
+            finalWidth,
+            finalHeight,
             Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.setBounds(0, 0, finalWidth, finalHeight)
         drawable.draw(canvas)
         return bitmap
     }
